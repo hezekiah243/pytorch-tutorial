@@ -1,8 +1,12 @@
+# dependencies
+
+
+
 import torch 
-import torchvision
+import torchvision  # The torchvision package consists of popular datasets, model architectures, and common image transformations for computer vision.
 import torch.nn as nn
 import numpy as np
-import torchvision.transforms as transforms
+import torchvision.transforms as transforms # Transforms are common image transformations. 
 
 
 # ================================================================== #

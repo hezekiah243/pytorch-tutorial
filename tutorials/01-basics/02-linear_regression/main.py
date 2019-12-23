@@ -20,11 +20,15 @@ y_train = np.array([[1.7], [2.76], [2.09], [3.19], [1.694], [1.573],
                     [3.465], [1.65], [2.904], [1.3]], dtype=np.float32)
 
 # Linear regression model
-model = nn.Linear(input_size, output_size)
+linear = nn.Linear(input_size, output_size)
+
+print ('w: ', linear.weight)
+print ('b: ', linear.bias)
+
 
 # Loss and optimizer
 criterion = nn.MSELoss()
-optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate)  
+optimizer = torch.optim.SGD(linear.parameters(), lr=learning_rate)  
 
 # Train the model
 for epoch in range(num_epochs):
@@ -33,23 +37,23 @@ for epoch in range(num_epochs):
     targets = torch.from_numpy(y_train)
 
     # Forward pass
-    outputs = model(inputs)
+    outputs = linear(inputs)
     loss = criterion(outputs, targets)
     
     # Backward and optimize
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+    optimizer.zero_grad() # set the gradients to zero before starting to do back propogation.
+    loss.backward() # compute the gradients
+    optimizer.step() # updates the parameters
     
     if (epoch+1) % 5 == 0:
         print ('Epoch [{}/{}], Loss: {:.4f}'.format(epoch+1, num_epochs, loss.item()))
 
 # Plot the graph
-predicted = model(torch.from_numpy(x_train)).detach().numpy()
+predicted = linear(torch.from_numpy(x_train)).detach().numpy()
 plt.plot(x_train, y_train, 'ro', label='Original data')
 plt.plot(x_train, predicted, label='Fitted line')
 plt.legend()
 plt.show()
 
 # Save the model checkpoint
-torch.save(model.state_dict(), 'model.ckpt')
+torch.save(linear.state_dict(), 'tutorials/01-basics/02-linear_regression/0102-linear-model.ckpt')
